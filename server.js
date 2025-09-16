@@ -3,7 +3,8 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-let conceptos = []; // acá se guardan los conceptos en memoria
+// Array en memoria para guardar conceptos (⚠️ se borra al reiniciar el server)
+let conceptos = [];
 let nextId = 1;
 
 const mimeTypes = {
@@ -13,7 +14,7 @@ const mimeTypes = {
   '.json': 'application/json'
 };
 
-// función para responder fácilmente
+// Función helper para responder en JSON o texto
 function send(res, status, data, contentType = 'application/json') {
   res.writeHead(status, { 'Content-Type': contentType });
   res.end(typeof data === 'string' ? data : JSON.stringify(data));
@@ -25,10 +26,12 @@ const server = http.createServer((req, res) => {
   const pathname = parsedUrl.pathname;
 
   // --- ENDPOINTS REST ---
+  // GET: lista todos los conceptos
   if (pathname === '/api/conceptos' && req.method === 'GET') {
     return send(res, 200, conceptos);
   }
 
+  // GET/:id → obtiene un concepto específico por id
   if (pathname.startsWith('/api/conceptos/') && req.method === 'GET') {
     const id = parseInt(pathname.split('/').pop());
     const concepto = conceptos.find(c => c.id === id);
@@ -37,12 +40,14 @@ const server = http.createServer((req, res) => {
       : send(res, 404, { error: 'Concepto no encontrado' });
   }
 
+  // DELETE: elimina todos los conceptos
   if (pathname === '/api/conceptos' && req.method === 'DELETE') {
     conceptos = [];
     nextId = 1;
     return send(res, 200, { message: 'Todos eliminados' });
   }
 
+  // DELETE/:id → elimina un concepto en particular
   if (pathname.startsWith('/api/conceptos/') && req.method === 'DELETE') {
     const id = parseInt(pathname.split('/').pop());
     const index = conceptos.findIndex(c => c.id === id);
@@ -51,11 +56,13 @@ const server = http.createServer((req, res) => {
     return send(res, 200, { message: 'Eliminado', concepto: eliminado });
   }
 
-  // --- FORMULARIO (POST) ---
+  // --- FORMULARIO POST ---
+  // Procesa datos enviados desde el formulario (x-www-form-urlencoded)
   if (pathname === '/agregar-concepto' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => body += chunk.toString());
     req.on('end', () => {
+      // URLSearchParams → parsea el formulario
       const params = new URLSearchParams(body);
       const nombre = params.get('nombre');
       const desarrollo = params.get('desarrollo');
@@ -69,6 +76,7 @@ const server = http.createServer((req, res) => {
   }
 
   // --- ARCHIVOS ESTÁTICOS ---
+  // Sirve index.html, styles.css y app.js desde /public
   let filePath = pathname === '/' ? '/public/index.html' : pathname;
   filePath = path.join(__dirname, filePath.startsWith('/public') ? filePath : `/public${filePath}`);
   const ext = path.extname(filePath);
@@ -80,6 +88,7 @@ const server = http.createServer((req, res) => {
   });
 });
 
+// Levanta servidor en puerto 3000
 server.listen(3000, () => {
   console.log('Servidor escuchando en http://localhost:3000');
 });

@@ -1,3 +1,4 @@
+// Carga la lista de conceptos desde el backend y la muestra en pantalla
 async function cargar() {
   const res = await fetch('/api/conceptos');
   const data = await res.json();
@@ -14,11 +15,13 @@ async function cargar() {
   }
 }
 
+// Envía DELETE para borrar todos los conceptos
 async function borrarTodos() {
   await fetch('/api/conceptos', { method: 'DELETE' });
   await cargar();
 }
 
+// Envía DELETE para borrar un concepto específico por ID
 async function borrarUno() {
   const id = document.getElementById('idBorrar').value;
   if (!id) return alert('Ingresá un ID');
@@ -27,7 +30,9 @@ async function borrarUno() {
   await cargar();
 }
 
+// Asocia eventos a los botones
 document.getElementById('btnBorrarTodo').addEventListener('click', borrarTodos);
 document.getElementById('btnBorrarUno').addEventListener('click', borrarUno);
 
+// Ejecuta cargar() cuando la página termina de cargar
 window.addEventListener('DOMContentLoaded', cargar);
