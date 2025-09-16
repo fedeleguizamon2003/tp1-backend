@@ -12,20 +12,21 @@ Implementar un servidor Node **sin Express** que:
 
 ## Cómo correr
 ```bash
-npm start ``
+npm start 
+```
 
-Abrir en el navegador: http://localhost:3000
+## Abrir en el navegador: [Pagina](http://localhost:3000)
 
-Endpoints REST
-GET /api/conceptos → lista todos los conceptos.
+## Endpoints REST
+- GET /api/conceptos → lista todos los conceptos.
 
-GET /api/conceptos/:id → obtiene un concepto por su id.
+- GET /api/conceptos/:id → obtiene un concepto por su id.
 
-DELETE /api/conceptos → elimina todos los conceptos.
+- DELETE /api/conceptos → elimina todos los conceptos.
 
-DELETE /api/conceptos/:id → elimina un concepto en particular.
+- DELETE /api/conceptos/:id → elimina un concepto en particular.
 
-1** Formulario vacio: 
+**1 Formulario vacio **: 
 ![Formulario vacio](FormuVacio.png)
 
 2** Creacion de un concepto: 
