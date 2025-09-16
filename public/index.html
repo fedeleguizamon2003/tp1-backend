@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>TP1 – Conceptos</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Conceptos de la materia</h1>
+
+    <form action="/agregar-concepto" method="POST">
+      <label>Nombre
+        <input type="text" name="nombre" required>
+      </label>
+      <label>Desarrollo
+        <textarea name="desarrollo" rows="4" required></textarea>
+      </label>
+      <button type="submit">Agregar</button>
+    </form>
+
+    <section class="acciones">
+      <button type="button" id="btnBorrarTodo">Borrar todos</button>
+    </section>
+
+    <ul id="lista"></ul>
+
+    <section class="borrarUno">
+      <input id="idBorrar" type="number" placeholder="ID a borrar">
+      <button type="button" id="btnBorrarUno">Borrar por ID</button>
+    </section>
+  </main>
+  <script src="/public/app.js"></script>
+</body>
+</html>
